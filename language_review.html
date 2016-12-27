@@ -1,0 +1,153 @@
+<html>
+	<head>
+	<title>Language review</title>
+	<meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="lib/jquery.min.js"></script>
+	<script src="lib/vocab_class.js"></script>
+	<script src="Korean/kr_int_02.js"></script>
+	<script src="Korean/kr_int_03.js"></script>
+	<script src="Korean/kr_bas_23.js"></script>
+	<script src="Korean/kr_bas_25.js"></script>
+	<style type="text/css">
+		.class_border
+		{
+			border: 1px solid #000000;
+			margin: 2px;
+		}
+	    .class_div_line
+		{
+			clear: left;
+			display: inline-block;
+		}
+		.class_move_button
+		{
+			width: 46%;
+			text-align: center;
+		}
+    	.class_wrapper
+    	{
+    		float: left;
+    		width: 400px;
+    	}
+    	.class_section_wrapper
+    	{
+    		float: left;
+    		width: 98%;
+    	}
+    	.class_txt_content
+    	{
+    		float: left;
+    		width: 98%;
+    		text-align: center;
+    		overflow: auto;
+    	}
+    	.class_hide
+    	{
+    		display: none;
+    	}
+    	.class_button
+    	{
+    		background-color: #d3d3d3;
+    	}
+
+	</style>
+	</head>
+	<script type="text/javascript">
+	var word_pos=0;
+	var word_class=0;
+	var txt_move_left = "Left";
+	var txt_move_right = "Right";
+	var txt_show_translation = "Show/hide translation/notes";
+	var kr_classes = [];
+	var bool_show_trans = false;
+
+	//add a similar line for a new file/class vocab indicates the variable array that holds the class
+	kr_classes.push( { 'name': 'Intermediate 02', 'vocab': kr_int_02});
+	kr_classes.push( { 'name': 'Intermediate 03', 'vocab': kr_int_03});
+	kr_classes.push( { 'name': 'Basic 25', 'vocab': kr_bas_25});
+	kr_classes.push( { 'name': 'Basic 23', 'vocab': kr_bas_23});
+
+	function showWord (iPos,iClass)
+	{
+		$("#div_main_text").html(kr_classes[iClass]['vocab'][iPos]._text);
+		$("#div_translation").html(kr_classes[iClass]['vocab'][iPos]._trans);
+		var class_n = parseInt(iClass) +1;
+		var word_n = parseInt(iPos) + 1;
+		$("#div_word_counter").html("Class: "+class_n+"/"+kr_classes.length+" Word: "+word_n+"/"+kr_classes[iClass]['vocab'].length);
+	}
+	function ShowTrans()
+	{
+		$("#div_translation").toggleClass("class_hide");
+	}
+	function move(iDir)
+	{
+		if (iDir == "r")
+		{
+			word_pos += 1;
+			if (word_pos >=  kr_classes[word_class]['vocab'].length )
+			{
+				word_pos = 0;
+			}
+			showWord(word_pos,word_class);
+		}
+		else if (iDir == "l")
+		{
+			word_pos -= 1;
+			if ( word_pos <  0 )
+			{
+				word_pos = kr_classes[word_class]['vocab'].length - 1;
+			}
+			showWord(word_pos,word_class);
+		}
+	}
+	$( function() {
+		$('#select_classes').change(function() {
+			word_class = $('#select_classes').val();
+			word_pos = 0;
+			showWord(word_pos,word_class);
+		});
+	});
+	</script>
+	<body>
+		<div id="div_gen_container" class="class_wrapper class_border" >
+			<div id="div_classes">
+				<select id="select_classes">
+				</select>
+				<div id="div_word_counter" class="class_div_line">
+				</div>
+			</div>
+			<div id="div_options" class="class_section_wrapper class_border">
+				<div id="div_show_en" class="class_div_line class_border class_button" onclick="ShowTrans()">
+				</div>
+			</div>
+			<div id="div_movement" class="class_section_wrapper class_border" >
+				<div id="div_left" onclick='move("l")' class="class_div_line class_move_button class_border">
+				</div>
+				<div id="div_right" onclick='move("r")' class="class_div_line class_move_button class_border">
+				</div>
+			</div>
+			<div id="div_text_container">
+				<div id="div_main_text" class="class_txt_content class_border">Vocab
+				</div>
+				<div id="div_translation" class="class_txt_content class_border">translation
+				</div>
+				<div id="div_observations" class="class_txt_content class_border class_hide">Observations
+				</div>
+			</div>
+		</div>	
+	</body>
+	<script type="text/javascript">
+		$("#div_show_en").html(txt_show_translation);
+		$("#div_left").html(txt_move_left);
+		$("#div_right").html(txt_move_right);
+		$('#select_sp').empty();
+		$.each(kr_classes, function(index, value) {   
+     	$('#select_classes')
+        	.append($("<option></option>")
+           	.attr("value",index)
+           	.html(kr_classes[index]['name'])); 
+		});
+	</script>
+
+</html>
