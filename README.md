@@ -28,6 +28,7 @@ The class **VocabClass** is present in the **lib/** folder.
 ####3) Loading the js file to the website file
 #####3.1) Add the js file to the header
 The head contains the following files already
+
 ![](imgs/20161227-165255.png)
 
 The js files were put in the **Korean/**  folder. when generating a new js file add this in this section.
